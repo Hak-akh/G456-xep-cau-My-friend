@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Best Friend - Adam & Harry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #00bfa5; /* Teal */
+            --primary-dark: #00897b;
+            --secondary-color: #ffb74d; /* Light Orange */
+            --secondary-dark: #ffa726;
+            --success-color: #66bb6a;
+            --error-color: #ef5350;
+            --light-bg: #e0f7fa; /* Light Cyan */
+            --text-color: #37474f;
+            --disabled-color: #e0e0e0;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #e0f2f1 0%, #fafafa 100%); /* Subtle Teal to White Gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--text-color);
+            overscroll-behavior: none;
+            -webkit-tap-highlight-color: transparent;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            text-align: center;
+            padding: 25px;
+            max-width: 900px;
+            width: 95%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #cfd8dc;
+        }
+
+        .game-title {
+            font-family: 'Lilita One', cursive;
+            font-size: clamp(2.5em, 8vw, 3.8em);
+            color: var(--primary-dark);
+            margin: 0 0 15px;
+            line-height: 1.1;
+            text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0,0,0,0.05);
+        }
+
+        .meaning {
+            font-size: clamp(1.1em, 4.5vw, 1.6em);
+            color: var(--secondary-color);
+            margin: 10px 0;
+            font-style: italic;
+            font-weight: 700;
+        }
+
+        .sentence {
+            font-size: clamp(1.2em, 4vw, 1.6em);
+            margin: 25px 0;
+            min-height: 50px;
+            background: var(--light-bg);
+            padding: 18px;
+            border-radius: 12px;
+            border: 2px dashed #b2ebf2;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .word {
+            background: #fff;
+            border: 2px solid #bdbdbd;
+            border-bottom: 4px solid #9e9e9e;
+            border-radius: 12px;
+            padding: 12px 22px;
+            cursor: pointer;
+            font-size: clamp(1.1em, 3.8vw, 1.4em);
+            transition: all 0.15s ease-out;
+            user-select: none;
+            touch-action: manipulation;
+            font-weight: 700;
+        }
+
+        .word:hover, .word:focus {
+            background: var(--secondary-color);
+            border-color: var(--secondary-dark);
+            color: #fff;
+            transform: translateY(-4px);
+            outline: none;
+        }
+        
+        .word:active {
+             transform: translateY(0);
+             border-bottom-width: 2px;
+        }
+
+        .word.disabled {
+            background: #f5f5f5;
+            color: #bdbdbd;
+            cursor: not-allowed;
+            pointer-events: none;
+            border-color: #e0e0e0;
+            border-bottom-width: 2px;
+        }
+        
+        .word.correct {
+            background: var(--success-color);
+            border-color: #388e3c;
+            color: #fff;
+        }
+
+        .word.incorrect {
+            background: var(--error-color);
+            border-color: #c62828;
+            color: #fff;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: clamp(1em, 3.5vw, 1.2em);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-family: inherit;
+            box-shadow: 0 4px 10px rgba(0, 191, 165, 0.3);
+        }
+
+        button:hover, button:focus {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 137, 123, 0.4);
+            outline: none;
+        }
+
+        button:disabled {
+            background: var(--disabled-color);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #startBtn, #playAgainBtn {
+            background: var(--success-color);
+            box-shadow: 0 4px 10px rgba(102, 187, 106, 0.3);
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-family: 'Lilita One', cursive;
+        }
+         #startBtn:hover, #playAgainBtn:hover {
+            background: #388e3c;
+         }
+
+        .score {
+            font-size: clamp(1em, 4vw, 1.3em);
+            margin-top: 15px;
+            font-weight: 700;
+        }
+
+        .message {
+            font-size: clamp(1.1em, 4vw, 1.4em);
+            color: var(--error-color);
+            margin: 15px 0;
+            font-weight: 700;
+            min-height: 25px;
+        }
+        
+        .blink { animation: blink 0.4s 3; }
+        @keyframes blink { 50% { background: #fff; color: var(--text-color); } }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .start-screen, .congrats-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <canvas id="fireworks"></canvas>
+    <div class="container">
+        <div class="game-title">My Best Friend</div>
+        
+        <div class="start-screen" id="startScreen">
+            <button id="startBtn">Bắt đầu</button>
+        </div>
+
+        <div class="game-screen" id="gameScreen" style="display: none;">
+            <div class="meaning" id="meaning"></div>
+            <div class="sentence" id="sentence"></div>
+            <div class="message" id="message"></div>
+            <div class="word-bank" id="wordBank"></div>
+            <div class="buttons">
+                <button id="listenAgainBtn">🔊 Nghe lại</button>
+                <button id="resetBtn">🔄 Chơi lại</button>
+            </div>
+            <div class="score" id="score">Score: 0 | Sentences Completed: 0/25</div>
+        </div>
+
+        <div class="congrats-screen" id="congratsScreen" style="display: none;">
+            <div class="message" style="color: var(--success-color); font-size: 1.8em; font-family: 'Lilita One', cursive;">🎉 Hoàn thành xuất sắc! 🎉</div>
+            <button id="playAgainBtn">Chơi lại lần nữa</button>
+        </div>
+    </div>
+
+    <script>
+    const sentences = [
+        { en: "My name is Adam.", vi: "Tên tôi là Adam." },
+        { en: "I am seven years old.", vi: "Tôi bảy tuổi." },
+        { en: "I have many friends.", vi: "Tôi có nhiều bạn bè." },
+        { en: "Most of my friends are my age.", vi: "Hầu hết bạn bè của tôi đều bằng tuổi tôi." },
+        { en: "Some of them are older than me.", vi: "Một vài người trong số họ lớn tuổi hơn tôi." },
+        { en: "Some of them are younger than me.", vi: "Một vài người trong số họ nhỏ tuổi hơn tôi." },
+        { en: "My best friend is Harry.", vi: "Bạn thân nhất của tôi là Harry." },
+        { en: "He is seven.", vi: "Cậu ấy bảy tuổi." },
+        { en: "He lives near me.", vi: "Cậu ấy sống gần tôi." },
+        { en: "We go to the same English center and are in the same class.", vi: "Chúng tôi học cùng trung tâm tiếng Anh và cùng một lớp." },
+        { en: "Harry helps me with my maths homework.", vi: "Harry giúp tôi làm bài tập toán." },
+        { en: "I help him with his English homework.", vi: "Tôi giúp cậu ấy làm bài tập tiếng Anh." },
+        { en: "I can spell better than he can.", vi: "Tôi có thể đánh vần tốt hơn cậu ấy." },
+        { en: "Harry is 105 centimetres tall.", vi: "Harry cao 105 cm." },
+        { en: "He is taller than me.", vi: "Cậu ấy cao hơn tôi." },
+        { en: "I am only 103 centimetres tall.", vi: "Tôi chỉ cao 103 cm." },
+        { en: "He weighs 30 kilograms and is quite fat.", vi: "Cậu ấy nặng 30 kg và khá mập." },
+        { en: "He doesn’t like sport so he doesn’t get much exercise.", vi: "Cậu ấy không thích thể thao nên không tập thể dục nhiều." },
+        { en: "We both have black hair and brown eyes.", vi: "Cả hai chúng tôi đều có tóc đen và mắt nâu." },
+        { en: "Harry’s hair is longer than mine.", vi: "Tóc của Harry dài hơn tóc của tôi." },
+        { en: "I like sport, and play football or go swimming every day.", vi: "Tôi thích thể thao, và chơi bóng đá hoặc đi bơi mỗi ngày." },
+        { en: "Every evening Harry and I play computer games.", vi: "Mỗi buổi tối Harry và tôi chơi game trên máy tính." },
+        { en: "Sometimes we play on my computer.", vi: "Thỉnh thoảng chúng tôi chơi trên máy tính của tôi." },
+        { en: "Sometimes we play on his computer.", vi: "Thỉnh thoảng chúng tôi chơi trên máy tính của cậu ấy." },
+        { en: "Harry usually wins!", vi: "Harry thường chiến thắng!" }
+    ];
+
+    const elements = {
+        startScreen: document.getElementById('startScreen'),
+        gameScreen: document.getElementById('gameScreen'),
+        congratsScreen: document.getElementById('congratsScreen'),
+        meaning: document.getElementById('meaning'),
+        sentence: document.getElementById('sentence'),
+        message: document.getElementById('message'),
+        wordBank: document.getElementById('wordBank'),
+        listenAgainBtn: document.getElementById('listenAgainBtn'),
+        resetBtn: document.getElementById('resetBtn'),
+        startBtn: document.getElementById('startBtn'),
+        playAgainBtn: document.getElementById('playAgainBtn'),
+        score: document.getElementById('score'),
+        canvas: document.getElementById('fireworks')
+    };
+    
+    let state = {};
+    const isSpeechSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+
+    function initializeState() {
+        state = {
+            originalSentence: '', words: [], currentWordIndex: 0,
+            score: 0, completedSentences: 0,
+            isSpeaking: false, animationFrameId: null
+        };
+    }
+    
+    function initializeSpeech() {
+        if (isSpeechSupported && speechSynthesis.getVoices().length === 0) {
+            speechSynthesis.onvoiceschanged = () => console.log("Voices loaded.");
+        }
+    }
+
+    function speak(text, callback) {
+        if (!isSpeechSupported) { if(callback) callback(); return; }
+        if (speechSynthesis.speaking) { speechSynthesis.cancel(); }
+
+        state.isSpeaking = true;
+        elements.listenAgainBtn.disabled = true;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        
+        utterance.onend = () => {
+            state.isSpeaking = false;
+            elements.listenAgainBtn.disabled = state.currentWordIndex >= state.words.length;
+            if (callback) callback();
+        };
+        utterance.onerror = (event) => {
+            console.error('SpeechSynthesis Error:', event.error);
+            state.isSpeaking = false;
+            elements.listenAgainBtn.disabled = state.currentWordIndex >= state.words.length;
+            if (callback) callback();
+        };
+        
+        setTimeout(() => speechSynthesis.speak(utterance), 50);
+    }
+    
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function updateScoreDisplay() {
+        elements.score.textContent = `Điểm: ${state.score} | Hoàn thành: ${state.completedSentences}/${sentences.length}`;
+    }
+
+    function startNewSentence() {
+        if (state.completedSentences >= sentences.length) {
+            showCongratulations(); 
+            return;
+        }
+
+        const sentenceIndex = state.completedSentences;
+        const currentData = sentences[sentenceIndex];
+        
+        state.originalSentence = currentData.en;
+        const cleanSentence = currentData.en.replace(/[.!?]$/, '');
+        state.words = cleanSentence.split(' ');
+        state.currentWordIndex = 0;
+
+        elements.meaning.innerHTML = currentData.vi;
+        elements.message.textContent = '';
+        elements.sentence.textContent = '_ '.repeat(state.words.length).trim();
+        
+        const shuffledWords = shuffle([...state.words]);
+        elements.wordBank.innerHTML = '';
+        shuffledWords.forEach(word => {
+            const wordEl = document.createElement('div');
+            wordEl.className = 'word';
+            wordEl.textContent = word;
+            wordEl.addEventListener('click', () => handleWordClick(word, wordEl));
+            elements.wordBank.appendChild(wordEl);
+        });
+
+        elements.listenAgainBtn.disabled = false;
+        speak(state.words[0]);
+    }
+
+    function handleWordClick(clickedWord, wordEl) {
+        if (wordEl.classList.contains('disabled')) return;
+        const correctWord = state.words[state.currentWordIndex];
+
+        if (clickedWord === correctWord) {
+            if (speechSynthesis.speaking) speechSynthesis.cancel();
+            wordEl.classList.add('correct', 'disabled');
+            const sentenceWords = elements.sentence.textContent.split(' ');
+            sentenceWords[state.currentWordIndex] = clickedWord;
+            elements.sentence.textContent = sentenceWords.join(' ');
+            state.currentWordIndex++;
+            elements.message.textContent = '';
+
+            if (state.currentWordIndex === state.words.length) {
+                state.score += 10;
+                state.completedSentences++;
+                updateScoreDisplay();
+                elements.sentence.textContent = state.originalSentence;
+                speak(state.originalSentence, () => setTimeout(startNewSentence, 1800));
+            } else {
+                speak(state.words[state.currentWordIndex]);
+            }
+        } else {
+            wordEl.classList.add('incorrect');
+            elements.message.textContent = 'Sai rồi! Nghe lại nhé.';
+            
+            const correctWordEl = Array.from(elements.wordBank.children).find(el => 
+                !el.classList.contains('disabled') && el.textContent === correctWord
+            );
+            if(correctWordEl) correctWordEl.classList.add('blink');
+            
+            speak(correctWord);
+
+            setTimeout(() => {
+                wordEl.classList.remove('incorrect');
+                if(correctWordEl) correctWordEl.classList.remove('blink');
+                elements.message.textContent = '';
+            }, 1500);
+        }
+    }
+
+    function showCongratulations() {
+        elements.gameScreen.style.display = 'none';
+        elements.congratsScreen.style.display = 'flex';
+        startFireworks();
+    }
+
+    function resetGame() {
+        if (speechSynthesis.speaking) speechSynthesis.cancel();
+        initializeState();
+        updateScoreDisplay();
+        elements.congratsScreen.style.display = 'none';
+        elements.gameScreen.style.display = 'block';
+        elements.startScreen.style.display = 'none';
+        stopFireworks();
+        startNewSentence();
+    }
+    
+    const ctx = elements.canvas.getContext('2d');
+    let particles = [];
+    
+    function startFireworks() {
+        particles = [];
+        for (let i = 0; i < 100; i++) particles.push(createParticle());
+        animateFireworks();
+    }
+
+    function createParticle() {
+        const x = elements.canvas.width / 2, y = elements.canvas.height / 2;
+        const angle = Math.random() * Math.PI * 2, speed = Math.random() * 8 + 2;
+        return {
+            x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
+            color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+            size: Math.random() * 4 + 2, life: 1, fade: 0.02
+        };
+    }
+
+    function animateFireworks() {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = 'rgba(240, 244, 248, 0.1)';
+        ctx.fillRect(0, 0, elements.canvas.width, elements.canvas.height);
+        ctx.globalCompositeOperation = 'lighter';
+        
+        particles = particles.filter(p => p.life > 0);
+        if (particles.length === 0 && state.animationFrameId) { stopFireworks(); return; }
+
+        particles.forEach(p => {
+            p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life -= p.fade;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `hsla(${p.color.match(/\d+/)[0]}, 100%, 70%, ${p.life})`;
+            ctx.fill();
+        });
+        
+        state.animationFrameId = requestAnimationFrame(animateFireworks);
+    }
+    
+    function stopFireworks() {
+        if (state.animationFrameId) cancelAnimationFrame(state.animationFrameId);
+        state.animationFrameId = null;
+        particles = [];
+        ctx.clearRect(0, 0, elements.canvas.width, elements.canvas.height);
+    }
+
+    elements.startBtn.addEventListener('click', () => {
+        elements.startScreen.style.display = 'none';
+        elements.gameScreen.style.display = 'block';
+        resetGame();
+    });
+
+    elements.listenAgainBtn.addEventListener('click', () => {
+        if (state.words.length > 0 && state.currentWordIndex < state.words.length) {
+            speak(state.words[state.currentWordIndex]);
+        }
+    });
+
+    elements.resetBtn.addEventListener('click', resetGame);
+    elements.playAgainBtn.addEventListener('click', resetGame);
+    window.addEventListener('resize', () => {
+        elements.canvas.width = window.innerWidth;
+        elements.canvas.height = window.innerHeight;
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        elements.canvas.width = window.innerWidth;
+        elements.canvas.height = window.innerHeight;
+        initializeState();
+        initializeSpeech();
+        updateScoreDisplay();
+    });
+
+    </script>
+</body>
+</html>
